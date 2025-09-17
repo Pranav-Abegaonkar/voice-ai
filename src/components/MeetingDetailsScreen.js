@@ -1,6 +1,7 @@
 import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { AgentSelectionDropdown } from "./AgentSelectionDropdown";
 
 export function MeetingDetailsScreen({
   onClickJoin,
@@ -8,9 +9,12 @@ export function MeetingDetailsScreen({
   participantName,
   setParticipantName,
   onClickStartMeeting,
+  selectedAgent,
+  setSelectedAgent,
 }) {
   const [meetingId, setMeetingId] = useState("");
   const [meetingIdError, setMeetingIdError] = useState(false);
+  const [agentError, setAgentError] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [iscreateMeetingClicked, setIscreateMeetingClicked] = useState(false);
   const [isJoinMeetingClicked, setIsJoinMeetingClicked] = useState(false);
@@ -66,14 +70,28 @@ export function MeetingDetailsScreen({
             className="px-4 py-3 mt-5 bg-gray-650 rounded-xl text-white w-full text-center"
           />
 
+          <div className="mt-5">
+            <AgentSelectionDropdown
+              selectedAgent={selectedAgent}
+              setSelectedAgent={setSelectedAgent}
+              error={agentError}
+            />
+          </div>
+
           {/* <p className="text-xs text-white mt-1 text-center">
             Your name will help everyone identify you in the meeting.
           </p> */}
           <button
-            disabled={participantName.length < 3}
-            className={`w-full ${participantName.length < 3 ? "bg-gray-650" : "bg-purple-350"
+            disabled={participantName.length < 3 || !selectedAgent}
+            className={`w-full ${(participantName.length < 3 || !selectedAgent) ? "bg-gray-650" : "bg-purple-350"
               }  text-white px-2 py-3 rounded-xl mt-5`}
             onClick={(e) => {
+              if (!selectedAgent) {
+                setAgentError(true);
+                return;
+              }
+              setAgentError(false);
+              
               if (iscreateMeetingClicked) {
                 onClickStartMeeting();
               } else {
@@ -116,16 +134,16 @@ export function MeetingDetailsScreen({
                 }
               }}
             >
-              Create a meeting
+              Call AI Agent
             </button>
-            <button
+            {/* <button
               className="w-full bg-gray-650 text-white px-2 py-3 rounded-xl mt-5"
               onClick={(e) => {
                 setIsJoinMeetingClicked(true);
               }}
             >
               Join a meeting
-            </button>
+            </button> */}
           </div>
         </div>
       )}

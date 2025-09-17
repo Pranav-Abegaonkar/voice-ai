@@ -25,6 +25,9 @@ export const createMeeting = async ({ token }) => {
   const options = {
     method: "POST",
     headers: { Authorization: token, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      "geoFence":"us002"
+    }),
   };
 
   const response = await fetch(url, options)
@@ -61,4 +64,20 @@ export const validateMeeting = async ({ roomId, token }) => {
     return { meetingId: null, err: data.error }
   }
 
+};
+
+export const dispatchAgent = async (agentId, meetingId, authToken) => {
+  const response = await fetch("https://api.videosdk.live/v2/agent/dispatch", {
+    method: "POST",
+    headers: {
+      Authorization: authToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      agentId: agentId,
+      meetingId: meetingId,
+    }),
+  });
+
+  return response.json();
 };

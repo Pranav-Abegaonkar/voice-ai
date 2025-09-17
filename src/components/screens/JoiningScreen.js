@@ -21,6 +21,8 @@ import { useMeetingAppContext } from "../../MeetingAppContextDef";
 export function JoiningScreen({
   participantName,
   setParticipantName,
+  selectedAgent,
+  setSelectedAgent,
   setMeetingId,
   setToken,
   setMicOn,
@@ -526,6 +528,8 @@ export function JoiningScreen({
                   <MeetingDetailsScreen
                     participantName={participantName}
                     setParticipantName={setParticipantName}
+                    selectedAgent={selectedAgent}
+                    setSelectedAgent={setSelectedAgent}
                     videoTrack={videoTrack}
                     setVideoTrack={setVideoTrack}
                     onClickStartMeeting={onClickStartMeeting}
